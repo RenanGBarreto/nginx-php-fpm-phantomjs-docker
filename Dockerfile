@@ -31,6 +31,7 @@ RUN apt-get update \
   && apt-get update \
   && apt-get install -y -qq nano curl tesseract-ocr tesseract-ocr-eng nginx php7.2 php7.2-curl php7.2-json php7.2-mbstring php7.2-mysql php7.2-odbc php7.2-fpm php7.2-mongodb php7.2-gd \
   && phpenmod curl json mbstring mysql odbc mongodb gd \
+  && openssl dhparam -out /etc/ssl/certs/ssl-cert-snakeoil.pem 2048 && chmod -R 600 /etc/ssl/certs/* \
   && rm -Rf /var/www/* \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
   && apt-get clean -qq \
