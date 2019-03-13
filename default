@@ -3,11 +3,7 @@
 #####################
 server {
         listen 80 default_server;
-        listen [::]:80 default_server;
-        
-        listen 443 ssl default_server;
-        listen [::]:443 ssl default_server;
-        # include snippets/snakeoil.conf;
+        listen [::]:80 default_server;        
         
         root /var/www;
 
@@ -28,7 +24,6 @@ server {
         }
 
         location ~ \.php$ {
-           root html;
            fastcgi_split_path_info ^(.+\.php)(/.+)$;
            fastcgi_pass unix:/run/php/php7.2-fpm-api.sock;
            fastcgi_index index.php;
