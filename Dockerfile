@@ -48,16 +48,18 @@ RUN mkdir /root/phantomjs \
   && chmod a+x /root/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs \
   && ln -s /root/phantomjs/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
   
-# Tweaks to give PHP write permissions to the app
+# Tweaks to give Nginx/PHP write permissions to the app
 ENV DOCKER_USER_ID 501 
 ENV DOCKER_USER_GID 20
 ENV DOCKER_MACHINE_ID 1000
 ENV DOCKER_MACHINE_GID 50
+RUN usermod -u ${DOCKER_MACHINE_ID} www-data && \
+    usermod -G staff www-data
 RUN groupmod -g $(($DOCKER_MACHINE_GID + 10000)) $(getent group $DOCKER_MACHINE_GID | cut -d: -f1)
 RUN groupmod -g ${DOCKER_MACHINE_GID} staff
 
 # Create the execution binary for the entrypoint
-RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; nginx -g 'daemon off;'" > /run/startup.sh && chmod a+x /run/startup.sh
+RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; php-fpm7.2; nginx -g 'daemon off;'" > /run/startup.sh && chmod a+x /run/startup.sh
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
