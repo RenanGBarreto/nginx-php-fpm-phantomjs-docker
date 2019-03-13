@@ -12,7 +12,15 @@ Docker image for working with nginx, php7-fpm, php mongo extensions, phantomJS a
 - phantomjs
 
 ## How to run
-``` docker-compose up -d renangbarreto/nginx-php-fpm-phantom-docker ```
+``` docker-compose up -d renangbarreto/nginx-php-fpm-phantomjs-docker ```
 
 ## How to build
-``` docker-compose build -t renangbarreto/nginx-php-fpm-phantom-docker -f Dockerfile . ```
+``` docker-compose build -t renangbarreto/nginx-php-fpm-phantomjs-docker -f Dockerfile . ```
+
+## Volumes
+
+/var/www
+
+## Ports
+
+80

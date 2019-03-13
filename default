@@ -1,0 +1,54 @@
+#####################
+# DEFAULT SERVER
+#####################
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+		
+		listen 443 ssl default_server;
+		listen [::]:443 ssl default_server;
+		include snippets/snakeoil.conf;
+		
+		root /var/www;
+
+        add_header Strict-Transport-Security "max-age=31536000";
+        proxy_set_header Access-Control-Allow-Origin "";
+        add_header Access-Control-Allow-Origin *;
+
+        index  index.php index.html index.htm;
+        client_max_body_size 20M;
+        proxy_ignore_client_abort on;
+
+        location / {
+           try_files $uri $uri/ /index.php?$args;
+           proxy_set_header X-Forwarded-Proto $scheme;
+        }
+        location /nginx_status {
+           stub_status;
+        }
+
+        location ~ \.php$ {
+           root html;
+           fastcgi_split_path_info ^(.+\.php)(/.+)$;
+           fastcgi_pass unix:/run/php/php7.2-fpm-api.sock;
+           fastcgi_index index.php;
+           fastcgi_param SCRIPT_FILENAME /var/www$fastcgi_script_name;
+           fastcgi_intercept_errors on;
+           fastcgi_buffer_size 16k;
+           fastcgi_buffers 4 16k;
+           fastcgi_read_timeout 300;
+           include fastcgi_params;
+        }
+
+        gzip off;
+
+        location /phantomjs {
+           deny all;
+           return 404;
+        }
+
+        location ~* (composer.lock|Dockerfile|\.htaccess|\.project|\.bak|\.config|\.sql|\.fla|\.psd|\.ini|\.log|\.inc|\.swp|\.lock|\.phar|\.DS_Store|\.buildpath|\.project|\.settings|\.save)$ {
+           deny all;
+           return 404;
+        }
+}
