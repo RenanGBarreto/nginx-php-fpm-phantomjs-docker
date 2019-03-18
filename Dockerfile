@@ -25,7 +25,7 @@ MAINTAINER Renan Gomes <email@renangomes.com>
 
 # Install PHP7.2+Extensions and NGINX
 RUN apt-get update \
-  && apt-get install -y gnupg1 apt-transport-https ca-certificates wget \
+  && apt-get install -y gnupg1 apt-transport-https ca-certificates wget git zip unzip\
   && wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - \
   && echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php.list \
   && apt-get update \
