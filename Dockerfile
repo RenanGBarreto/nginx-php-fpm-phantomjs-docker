@@ -64,6 +64,9 @@ RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
+
+# make sure the user can write in tmp
+RUN chmod 777 /tmp
 	
 ## Change the work dir the the code dir
 WORKDIR /var/www
