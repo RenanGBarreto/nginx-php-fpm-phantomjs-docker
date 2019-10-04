@@ -71,7 +71,7 @@ RUN chmod 777 /tmp
 ## Change the work dir the the code dir
 WORKDIR /var/www
 
-VOLUME ["/var/www", "/var/log/nginx", "/etc/nginx/", "/etc/nginx/conf.d/"]
+VOLUME ["/var/www", "/var/log/nginx", "/etc/nginx/conf.d/"]
 
 STOPSIGNAL SIGTERM
 
