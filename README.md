@@ -4,7 +4,7 @@ Docker image for working with nginx, php7-fpm, php mongo extensions, phantomJS a
 
 ## Software installed:
 - Nginx
-- PHP 7.2 (FPM)
+- PHP 7.3 (FPM)
 - composer (from php)
 - php-mongodb extension
 - php-mysql extension
