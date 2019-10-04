@@ -19,10 +19,10 @@ Docker image for working with nginx, php7-fpm, php mongo extensions, phantomJS a
 
 ## Volumes
 
-/var/www
-/var/log/nginx
-/etc/nginx/
-/etc/nginx/conf.d/default.conf
+- /var/www
+- /var/log/nginx
+- /etc/nginx/
+- /etc/nginx/conf.d/default.conf
 
 ## Ports
 
