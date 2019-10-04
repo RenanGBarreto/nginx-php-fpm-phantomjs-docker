@@ -8,7 +8,7 @@
 ########################################################
 # SERVICES AND LIBS INSTALLED:
 # - Nginx
-# - PHP 7 (FPM)
+# - PHP 7.3 (FPM)
 # - composer
 # - php-mongodb extension
 # - php-mysql extension
@@ -23,14 +23,14 @@ FROM debian:9-slim
 
 MAINTAINER Renan Gomes <email@renangomes.com>
 
-# Install PHP7.2+Extensions and NGINX
+# Install PHP7.3+Extensions and NGINX
 RUN apt-get update \
   && apt-get install -y gnupg1 apt-transport-https ca-certificates wget git zip unzip\
   && wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - \
   && echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php.list \
   && apt-get update \
-  && apt-get install -y -qq nano curl tesseract-ocr tesseract-ocr-eng nginx php7.2 php7.2-curl php7.2-json php7.2-mbstring php7.2-mysql php7.2-odbc php7.2-fpm php7.2-mongodb php7.2-gd \
-  && phpenmod curl json mbstring mysql odbc mongodb gd \
+  && apt-get install -y -qq nano curl tesseract-ocr tesseract-ocr-eng nginx php7.3 php7.3-curl php7.3-json php7.3-mbstring php7.3-mysql php7.3-simplexml php7.3-odbc php7.3-fpm php7.3-mongodb php7.3-gd \
+  && phpenmod curl json mbstring mysql odbc mongodb gd simplexml \
   && openssl dhparam -out /etc/ssl/certs/ssl-cert-snakeoil.pem 2048 && chmod -R 600 /etc/ssl/certs/* \
   && rm -Rf /var/www/* && mkdir /run/php/ \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
@@ -59,7 +59,7 @@ RUN groupmod -g $(($DOCKER_MACHINE_GID + 10000)) $(getent group $DOCKER_MACHINE_
 RUN groupmod -g ${DOCKER_MACHINE_GID} staff
 
 # Create the execution binary for the entrypoint
-RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; php-fpm7.2; nginx -g 'daemon off;'" > /run/startup.sh && chmod a+x /run/startup.sh
+RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; php-fpm7.3; nginx -g 'daemon off;'" > /run/startup.sh && chmod a+x /run/startup.sh
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -71,7 +71,7 @@ RUN chmod 777 /tmp
 ## Change the work dir the the code dir
 WORKDIR /var/www
 
-VOLUME ["/var/www"]
+VOLUME ["/var/www", "/var/log/nginx", "/etc/nginx/", "/etc/nginx/conf.d/default.conf"]
 
 STOPSIGNAL SIGTERM
 

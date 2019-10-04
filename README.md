@@ -4,7 +4,7 @@ Docker image for working with nginx, php7-fpm, php mongo extensions, phantomJS a
 
 ## Software installed:
 - Nginx
-- PHP 7 (FPM)
+- PHP 7.2 (FPM)
 - composer (from php)
 - php-mongodb extension
 - php-mysql extension
@@ -12,14 +12,17 @@ Docker image for working with nginx, php7-fpm, php mongo extensions, phantomJS a
 - phantomjs
 
 ## How to run
-``` docker-compose up -d renangbarreto/nginx-php-fpm-phantomjs-docker ```
+``` docker run --name nginx-php-fpm-phantomjs-docker -d renangbarreto/nginx-php-fpm-phantomjs-docker ```
 
 ## How to build
-``` docker-compose build -t renangbarreto/nginx-php-fpm-phantomjs-docker -f Dockerfile . ```
+``` docker build -t renangbarreto/nginx-php-fpm-phantomjs-docker -f Dockerfile . ```
 
 ## Volumes
 
 /var/www
+/var/log/nginx
+/etc/nginx/
+/etc/nginx/conf.d/default.conf
 
 ## Ports
 
