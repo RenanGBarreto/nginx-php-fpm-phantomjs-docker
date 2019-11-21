@@ -29,12 +29,14 @@ RUN apt-get update \
   && wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - \
   && echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php.list \
   && apt-get update \
+  && apt-get install -y wget \
+  && wget -O /etc/ssl/certs/curl-ca-bundle.crt https://curl.haxx.se/ca/cacert.pem \
+  && chmod 744 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt \  
   && apt-get install -y -qq nano curl tesseract-ocr tesseract-ocr-eng nginx php7.3 php7.3-curl php7.3-soap php7.3-json php7.3-mbstring php7.3-mysql php7.3-simplexml php7.3-odbc php7.3-fpm php7.3-mongodb php7.3-gd \
   && phpenmod curl json mbstring mysql odbc mongodb gd simplexml soap \
   && openssl dhparam -out /etc/ssl/certs/ssl-cert-snakeoil.pem 2048 && chmod -R 600 /etc/ssl/certs/* \
   && sed -i "s|;*clear_env\s*=\s*.*|clear_env = no|g" /etc/php/7.3/fpm/pool.d/www.conf \
   && rm -Rf /var/www/* && mkdir /run/php/ \
-  && chmod 744 /etc/ssl/certs/ca-certificates.crt \  
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
   && apt-get clean -qq \
   && apt-get autoremove -y \
