@@ -31,7 +31,8 @@ RUN apt-get update \
   && apt-get update \
   && apt-get install -y wget \
   && wget -O /etc/ssl/certs/curl-ca-bundle.crt https://curl.haxx.se/ca/cacert.pem \
-  && chmod 744 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt \  
+  && chmod 777 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt \  
+  && chown www-data:www-data /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt \
   && apt-get install -y -qq nano curl tesseract-ocr tesseract-ocr-eng nginx php7.3 php7.3-curl php7.3-soap php7.3-json php7.3-mbstring php7.3-mysql php7.3-simplexml php7.3-odbc php7.3-fpm php7.3-mongodb php7.3-gd \
   && phpenmod curl json mbstring mysql odbc mongodb gd simplexml soap \
   && openssl dhparam -out /etc/ssl/certs/ssl-cert-snakeoil.pem 2048 && chmod -R 600 /etc/ssl/certs/* \
@@ -63,7 +64,7 @@ RUN groupmod -g $(($DOCKER_MACHINE_GID + 10000)) $(getent group $DOCKER_MACHINE_
 RUN groupmod -g ${DOCKER_MACHINE_GID} staff
 
 # Create the execution binary for the entrypoint
-RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; chmod 744 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt; php-fpm7.3; nginx -g 'daemon off;'" > /run/startup.sh && chmod a+x /run/startup.sh
+RUN echo "#\!/bin/sh\n cd /var/www; composer --no-plugins --no-scripts install; chown www-data:www-data /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt; chmod 777 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt; php-fpm7.3; nginx -g 'daemon off;'" > /run/startup.sh && chmod a+x /run/startup.sh
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -71,9 +72,9 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 # make sure the user can write in tmp
 RUN chmod 777 /tmp
+RUN chmod 777 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt
+RUN chown www-data:www-data /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt
 
-RUN chmod 744 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/curl-ca-bundle.crt
-	
 ## Change the work dir the the code dir
 WORKDIR /var/www
 
