@@ -14,6 +14,7 @@
 # - php-mysql extension
 # - tesseract-ocr
 # - phantomjs
+# - wkhtmltopdf
 ########################################################
 # This dockerfile was created based on:
 # - https://hub.docker.com/_/debian
@@ -25,7 +26,7 @@ MAINTAINER Renan Gomes <email@renangomes.com>
 
 # Install PHP7.3+Extensions and NGINX
 RUN apt-get update \
-  && apt-get install -y gnupg1 apt-transport-https ca-certificates wget git zip unzip\
+  && apt-get install -y gnupg1 apt-transport-https ca-certificates wget git zip unzip  wkhtmltopdf \
   && wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add - \
   && echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php.list \
   && apt-get update \
